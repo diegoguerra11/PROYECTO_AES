@@ -13,20 +13,18 @@ export function ProjectDetails(){
         },
     });
 
-    console.log(data)
+    console.log(data);
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error!</p>
 
-    return <div>
-
+    return (
+        <div>
             <h1>{data.project.name}</h1>
             <p>{data.project.description}</p>
-            <button>
-                Delete
-            </button>
+            <button>Delete</button>
             <TaskForm />
             <TasksList tasks={data.project.tasks} />
             
         </div>
-    
+    );
 }
