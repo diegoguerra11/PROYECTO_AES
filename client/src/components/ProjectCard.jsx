@@ -1,4 +1,4 @@
-import {useNavigate} from "react-rauter-dom";
+import {useNavigate} from "react-router-dom";
 
 
 export function ProjectCard({project }){
