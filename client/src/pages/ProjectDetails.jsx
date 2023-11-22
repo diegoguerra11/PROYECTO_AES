@@ -23,8 +23,7 @@ export function ProjectDetails(){
             <p>{data.project.description}</p>
             <button>Delete</button>
             <TaskForm />
-            <TasksList tasks={data.project.tasks} />
-            
+            <TasksList tasks={data.project.tasks} />    
         </div>
     );
 }
