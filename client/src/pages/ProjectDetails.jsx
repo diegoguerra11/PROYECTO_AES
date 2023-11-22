@@ -1,4 +1,4 @@
-import {userParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import {useQuery} from '@apollo/client'
 import {GET_PROJECT} from '../graphql/projects'
 import {TasksList} from '../components/tasks/TasksList'
@@ -6,12 +6,12 @@ import {TaskForm} from '../components/tasks/TaskForm'
 
 export function ProjectDetails(){
 
-    const params = userParams()
+    const params = useParams()
     const {data,loading, error} = useQuery(GET_PROJECT,{
         variables: {
             id: params.id,
         },
-    })
+    });
 
     console.log(data)
     if (loading) return <p>Loading...</p>

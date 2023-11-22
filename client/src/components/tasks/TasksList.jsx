@@ -1,4 +1,4 @@
-import TaskCard from "./TaskCard";
+import {TaskCard} from "./TaskCard";
 
 export function TasksList({ tasks }){
     return (

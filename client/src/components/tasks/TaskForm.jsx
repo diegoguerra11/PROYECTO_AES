@@ -1,7 +1,7 @@
 export function TaskForm(){
 
     const handleSubmit = (e) =>{
-        e.preventDefalt();
+        e.preventDefault();
         console.log(e.target.title.value)
     }
     return (
