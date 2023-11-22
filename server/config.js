@@ -1,0 +1,1 @@
+export const MONGODB_URI = 'mongodb://mongo:HDFa-FbGB6A2H-GBFBbAhFEGe1-6aEeh@viaduct.proxy.rlwy.net:38202'
