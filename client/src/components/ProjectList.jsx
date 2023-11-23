@@ -11,13 +11,13 @@ export function ProjectList(){
 
     console.log(data)
 
-    return
-        <div>
+    return(
+        <div className='overflow-y-auto h-72 w-full px-5'>
             {
                 data.projects.map(project=>(
                     <ProjectCard key={project._id} project={project}/>
                 ))
             }
-        </div>
+        </div>);
     
 }
