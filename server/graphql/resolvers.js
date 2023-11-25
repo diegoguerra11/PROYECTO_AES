@@ -8,7 +8,14 @@ export const resolvers = {
     Query: {
         hello: () => 'Hello World!',
         projects: async () =>  await Project.find(),
-        project: async (_, { _id}) => await Project.findById(_id),
+        project: async (_, { _id}) => {
+
+            const project = await Project.findById(_id);
+
+            pubSub.publish('EVENT_SEARCH', { searchProject:project });
+
+            return project
+        },
         task: async (_, { _id}) => await Task.findById(_id),
         tasks: async () => await Task.find()   
     },
@@ -32,8 +39,6 @@ export const resolvers = {
                 projectId,
             });
             const taskSaved = await task.save();
-
-            pubSub.publish('EVENT_CREATED', { newTask: {title, projectFound} });
 
             return taskSaved;
         },
@@ -72,8 +77,8 @@ export const resolvers = {
         project: async (parent) => await Project.findById(parent.projectId)
     },
     Subscription: {
-        newTask: {
-            subscribe: () => pubSub.asyncIterator(['EVENT_CREATED'])
+        searchProject: {
+            subscribe: () => pubSub.asyncIterator(['EVENT_SEARCH'])
         },
     }
 };

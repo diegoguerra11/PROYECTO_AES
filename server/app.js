@@ -26,7 +26,7 @@ export async function startApolloServer(typeDefs, resolvers) {
         // Es el servidor creado previamente.
         server: httpServer,
         //Ruta distinta para las suscripciones
-        path: '/subscriptions',
+        path: '/graphql',
     });
   
     //Obtiene el schema creado y el servidor WebSocket empieza a escuchar

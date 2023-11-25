@@ -36,6 +36,6 @@ export const typeDefs = gql`
     }
 
     type Subscription {
-        newTask: Task
+        searchProject: Project
     }
 `
