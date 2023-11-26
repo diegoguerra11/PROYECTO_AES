@@ -34,4 +34,14 @@ mutation($name: String, $description: String){
     }
 }
 `
+
+export const EVENT_SEARCH = gql`
+    subscription {
+        searchProject {
+            _id
+            name
+            description
+        }
+    }
+`
    
