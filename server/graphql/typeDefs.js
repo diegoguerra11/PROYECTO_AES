@@ -34,4 +34,8 @@ export const typeDefs = gql`
         createdAt: String
         updatedAt: String
     }
+
+    type Subscription {
+        searchProject: Project
+    }
 `
