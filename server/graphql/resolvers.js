@@ -9,7 +9,10 @@ const {hash, compare} = pkg
 const pubSub = new PubSub()
 
 const events = {
-    LOGIN: "LOGIN"
+    LOGIN: "LOGIN",
+    CREATE_PROJECT: "CREATE_PROJECT",
+    ALLOCATE_TASK: "ALLOCATE_TASK",
+    FINALIZED_TASK: "FINALIZED_TASK",
 }
 
 export const resolvers = {
@@ -24,6 +27,7 @@ export const resolvers = {
         },
         task: async (_, { _id}) => await Task.findById(_id),
         tasks: async () => await Task.find(),
+        users: async () => await User.find(),
     },
     Mutation: {
         createProject: async (_, {name, description}) => {
@@ -32,6 +36,9 @@ export const resolvers = {
                 description,
             });
             const savedProject = await project.save();
+
+            pubSub.publish(events.CREATE_PROJECT, { createProject: savedProject });
+
             return savedProject;
         },
         createUser: async (_, {name, lastname, password}) => {
@@ -47,7 +54,7 @@ export const resolvers = {
 
             return savedUser;
         },
-        createTask: async (_, {title, projectId}) => {
+        createTask: async (_, {title, projectId, userId}) => {
 
             const projectFound = await Project.findById(projectId);
 
@@ -56,8 +63,12 @@ export const resolvers = {
             const task = new Task({
                 title,
                 projectId,
+                userId,
             });
+            
             const taskSaved = await task.save();
+            
+            pubSub.publish(events.ALLOCATE_TASK, { allocateTask: taskSaved });
 
             return taskSaved;
         },
@@ -88,6 +99,19 @@ export const resolvers = {
             if (!updateTask) throw new Error("Task not found");
             return updatedTask;
         },
+        finishTask: async (_, args) =>{
+            const updatedTask = await Task.findByIdAndUpdate(args._id, {
+                finalized: true
+            }, {
+                new: true,
+            });
+            
+            if (!updatedTask) throw new Error("Task not found");
+
+            pubSub.publish(events.FINALIZED_TASK, { finalizedTask: updatedTask });
+
+            return updatedTask;
+        },
         login: async (_, {name, password}) => {
 
             const data = await User.findOne({name});
@@ -107,11 +131,21 @@ export const resolvers = {
         tasks: async (parent) => await Task.find({projectId: parent._id})
     },
     Task: {
-        project: async (parent) => await Project.findById(parent.projectId)
+        project: async (parent) => await Project.findById(parent.projectId),
+        user: async (parent) => await User.findById(parent.userId)
     },
     Subscription: {
         login: {
             subscribe: () => pubSub.asyncIterator([events.LOGIN])
+        },
+        allocateTask: {
+            subscribe: () => pubSub.asyncIterator([events.ALLOCATE_TASK])
+        },
+        finalizedTask: {
+            subscribe: () => pubSub.asyncIterator([events.FINALIZED_TASK])
+        },
+        createProject: {
+            subscribe: () => pubSub.asyncIterator([events.CREATE_PROJECT])
         },
     }
 };
