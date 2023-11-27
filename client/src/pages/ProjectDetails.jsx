@@ -1,14 +1,10 @@
 import {useParams, Link} from 'react-router-dom'
-import {useQuery, useSubscription} from '@apollo/client'
-import {GET_PROJECT, EVENT_SEARCH} from '../graphql/projects'
+import {useQuery } from '@apollo/client'
+import {GET_PROJECT } from '../graphql/projects'
 import {TasksList} from '../components/tasks/TasksList'
 import {TaskForm} from '../components/tasks/TaskForm'
 
-
-
 export function ProjectDetails(){
-
-
 
     const params = useParams()
     const {data,loading, error} = useQuery(GET_PROJECT,{
@@ -17,11 +13,6 @@ export function ProjectDetails(){
         },
     });
 
-    useSubscription(EVENT_SEARCH, ({subscriptionData}) => {
-        console.log({subscriptionData})
-    })
-
-    console.log(data);
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error!</p>
 

@@ -1,8 +1,16 @@
 import Project from '../models/Project.js';
 import Task from '../models/Task.js';
+import User from '../models/User.js';
 import { PubSub } from 'graphql-subscriptions';
+import pkg from 'bcryptjs'
+
+const {hash, compare} = pkg
 
 const pubSub = new PubSub()
+
+const events = {
+    LOGIN: "LOGIN"
+}
 
 export const resolvers = {
     Query: {
@@ -12,12 +20,10 @@ export const resolvers = {
 
             const project = await Project.findById(_id);
 
-            pubSub.publish('EVENT_SEARCH', { searchProject:project });
-
             return project
         },
         task: async (_, { _id}) => await Task.findById(_id),
-        tasks: async () => await Task.find()   
+        tasks: async () => await Task.find(),
     },
     Mutation: {
         createProject: async (_, {name, description}) => {
@@ -27,6 +33,19 @@ export const resolvers = {
             });
             const savedProject = await project.save();
             return savedProject;
+        },
+        createUser: async (_, {name, lastname, password}) => {
+            const crypt = await hash(password, 2);
+
+            const user = new User({
+                name,
+                lastname,
+                password:crypt
+            });
+            
+            const savedUser = await user.save();
+
+            return savedUser;
         },
         createTask: async (_, {title, projectId}) => {
 
@@ -68,6 +87,20 @@ export const resolvers = {
             });
             if (!updateTask) throw new Error("Task not found");
             return updatedTask;
+        },
+        login: async (_, {name, password}) => {
+
+            const data = await User.findOne({name});
+
+            if (data == null) return null
+
+            const login = await compare(password, data.password);
+
+            if(login) {
+                pubSub.publish(events.LOGIN, { login: data });
+            }
+
+            return login ? data : null
         }
     },
     Project: {
@@ -77,8 +110,8 @@ export const resolvers = {
         project: async (parent) => await Project.findById(parent.projectId)
     },
     Subscription: {
-        searchProject: {
-            subscribe: () => pubSub.asyncIterator(['EVENT_SEARCH'])
+        login: {
+            subscribe: () => pubSub.asyncIterator([events.LOGIN])
         },
     }
 };

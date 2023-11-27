@@ -18,9 +18,6 @@ export function ProjecForm(){
         ],
     })
         
-
-   
-
     const handleChange = e =>{
         setProject({
             ...project,
@@ -47,18 +44,18 @@ export function ProjecForm(){
 
             <input
                 type="text"
-                 name="name"
+                name="name"
                 placeholder="Escribe el título"
                 onChange={handleChange} 
                 className="bg-zinc-800 text-white rounded-lg shadow-lg p-4 block w-full mb-3"
-      />
-      <textarea
-                name="description"
-                rows="3"
-                placeholder="Escribe la descripción"
-                onChange={handleChange} 
-                className="bg-zinc-800 text-white rounded-lg shadow-lg p-4 block w-full mb-3"
-      ></textarea>
+            />
+            <textarea
+                    name="description"
+                    rows="3"
+                    placeholder="Escribe la descripción"
+                    onChange={handleChange} 
+                    className="bg-zinc-800 text-white rounded-lg shadow-lg p-4 block w-full mb-3"
+            ></textarea>
             <button
                 disabled={!project.name || !project.description || loading}
                 className="bg-blue-500 px-4 py-3 text-lg mb-3 rounded-md disabled:bg-zinc-400"

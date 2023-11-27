@@ -1,12 +1,14 @@
-import {ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, split } from "@apollo/client";
-import {BrowserRouter, Routes, Route,Navigate} from "react-router-dom";
 import React from 'react'
+import { ApolloClient, ApolloProvider, InMemoryCache, createHttpLink, split, useSubscription } from "@apollo/client";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Projects } from "./pages/Projects";
+import { Login } from "./pages/Login";
 import { ProjectDetails } from "./pages/ProjectDetails";
 import { getMainDefinition } from "@apollo/client/utilities";
 
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
+
 
 
 const httpLink = createHttpLink({
@@ -37,16 +39,16 @@ const client = new ApolloClient({
 
 function App() {
   return (
-    
     <ApolloProvider client={client}>
       <BrowserRouter>
-       <div className="container m-auto h-screen flex items-center justify-center">
-       <Routes>
-          <Route path='/' element={<Navigate to="/projects"/>}></Route>
-          <Route path='/projects' element={<Projects/>}></Route>
-          <Route path='/projects/:id' element={<ProjectDetails/>}></Route>
-        </Routes>
-       </div>
+        <div className="container m-auto h-screen flex items-center justify-center">
+          <Routes>
+              <Route path='/' element={<Navigate to="/login"/>}></Route>
+              <Route path='/login' element={<Login/>}></Route>
+              <Route path='/projects' element={<Projects/>}></Route>
+              <Route path='/projects/:id' element={<ProjectDetails/>}></Route>
+            </Routes>
+        </div>
       </BrowserRouter>
     </ApolloProvider>
   )
