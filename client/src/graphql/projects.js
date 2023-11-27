@@ -35,3 +35,12 @@ mutation($name: String, $description: String){
 }
 `
    
+export const CREATE_PROJECT_SUBSCRIPTION =  gql`
+    subscription {
+        createProject {
+            _id
+            name
+            description
+        }
+    }
+`
