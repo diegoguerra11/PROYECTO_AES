@@ -23,7 +23,6 @@ export function ProjecForm(){
             ...project,
             [e.target.name]: e.target.value,
         })
-        console.log(e.target.name, e.target.value);
     }
 
     const handleSubmit = (e) =>{
@@ -34,7 +33,6 @@ export function ProjecForm(){
                 description: project.description
             }
         })
-        console.log(project);
     }
 
     return(

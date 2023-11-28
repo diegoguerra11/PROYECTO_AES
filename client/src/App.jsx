@@ -20,6 +20,7 @@ const wsLink = new GraphQLWsLink(createClient({
   }
 }));
 
+// APOLLO CLIENT SEGÚN EL TIPO DE PETICION USA EL PROTOCOLO WEB SOCKET O HTTP
 const splitLink = split(({query}) => {
   const definiton = getMainDefinition(query)
   return (

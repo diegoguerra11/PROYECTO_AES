@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client"
 
+//MUTATION QUE PERMITE AUTENTICAR A UN USUARIO
 export const AUTENTICATION = gql`
 mutation($name: String, $password: String) {
     login(name: $name, password: $password) {
@@ -10,6 +11,7 @@ mutation($name: String, $password: String) {
 }
 `
 
+// CONSULTA DE USUARIOS
 export const GET_USERS = gql`
     query Users {
         users {
@@ -20,6 +22,7 @@ export const GET_USERS = gql`
     }
 `
 
+//SUBSCRIPCION QUE EMITE UN MENSAJE CUANDO SE REALIZA LA MUTATION LOGIN
 export const LOGIN = gql`
     subscription {
         login {
