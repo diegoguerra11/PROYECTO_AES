@@ -2,6 +2,7 @@ import { ProjecForm } from "../components/ProjectForm";
 import { ProjectList } from "../components/ProjectList";
 import { useSubscription } from "@apollo/client";
 import { LOGIN } from '../graphql/user';
+import { ALLOCATE_TASK } from '../graphql/tasks'
 
 export function Projects(){
     
@@ -17,6 +18,25 @@ export function Projects(){
                 position: 'topRight',
                 message: `Se conectó ${lastname} ${name}`
             });
+        }
+    })
+
+    useSubscription(ALLOCATE_TASK, {
+        onSubscriptionData: ({ subscriptionData }) => {
+            const {title} = subscriptionData.data.allocateTask
+            const {_id, name} = subscriptionData.data.allocateTask.project
+            const {_id:doc} = subscriptionData.data.allocateTask.user
+            
+            if(doc ==localStorage.getItem('id')) {
+                iziToast.show({
+                    title: 'INFO',
+                    titleColor: '#32AAEA',
+                    color: '#FFF',
+                    class: 'text-danger',
+                    position: 'topRight',
+                    message: `Se te asignó la tarea ${title} del proyecto ${name}`
+                });
+            }
         }
     })  
 
