@@ -9,8 +9,6 @@ import { getMainDefinition } from "@apollo/client/utilities";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 
-
-
 const httpLink = createHttpLink({
   uri:'http://localhost:4000/graphql'
 })

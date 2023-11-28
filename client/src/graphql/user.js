@@ -10,8 +10,8 @@ mutation($name: String, $password: String) {
 }
 `
 
-export const USERS = gql`
-    query Query {
+export const GET_USERS = gql`
+    query Users {
         users {
             _id
             name

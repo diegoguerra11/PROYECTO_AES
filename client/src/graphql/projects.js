@@ -20,6 +20,10 @@ export const GET_PROJECT = gql`
             tasks{
                 _id
                 title
+                user {
+                    name
+                    lastname
+                }
             }
         }
     }

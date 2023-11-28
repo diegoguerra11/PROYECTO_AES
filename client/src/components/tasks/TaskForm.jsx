@@ -1,15 +1,15 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { CREATE_TASK } from '../../graphql/tasks'
-import { USERS } from '../../graphql/user'
+import { GET_USERS } from '../../graphql/user'
 import { useParams } from "react-router-dom";
 
 export function TaskForm(){
 
-    const {loading, error, data} = useQuery(USERS)
-
     const [createTask] = useMutation(CREATE_TASK, {
         refetchQueries: ['getProject']
     });
+
+    const {loading, error, data} = useQuery(GET_USERS);
 
     const params = useParams();
 
@@ -26,7 +26,8 @@ export function TaskForm(){
         e.target.title.focus();
     };
 
-    console.log(data)
+    if (loading) return 'Loading...';
+    if (error) return `Error! ${error.message}`;
 
     return (
         <form onSubmit={handleSubmit}>
@@ -43,7 +44,7 @@ export function TaskForm(){
                 <option value=''>-- Seleccionar Usuario --</option>
                 {
                     data.users.map(item => (
-                        <option key={item._id}>{item.lastname} {item.name}</option>
+                        <option key={item._id} value={item._id}>{item.lastname} {item.name}</option>
                     ))  
                 }  
       
